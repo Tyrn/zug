@@ -123,8 +123,8 @@ vendor/
 *.cfg
 *.xml
 *.scratch
-*stm32f*
-freertos.*
+#*stm32f*
+#freertos.*
 *Config.*
 
 .mxproject

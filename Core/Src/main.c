@@ -98,8 +98,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    CDC_Transmit_FS(Text,6); /*when commented the port is recognized*/
-        HAL_Delay(1000);
+    CDC_Transmit_FS(Text, 7); /*when commented the port is recognized*/
+    HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
