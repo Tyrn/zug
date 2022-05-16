@@ -87,19 +87,22 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  uint8_t Text[] = "Hello\r\n";
-  HAL_Delay(1000);
+  //uint8_t Text[] = "Hello\r\n";
+  //HAL_Delay(1000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint8_t buf[1000];
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    CDC_Transmit_FS(Text, 7); /*when commented the port is recognized*/
-    HAL_Delay(1000);
+    // VCP demonstration - Echo all data received over VCP back to the host
+    int len = vcp_recv (buf, 1000);  // Read up to 1000 bytes
+    if (len > 0)    // If some data was read, send it back :
+      len = vcp_send (buf, len);
   }
   /* USER CODE END 3 */
 }
