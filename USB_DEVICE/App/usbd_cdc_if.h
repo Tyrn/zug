@@ -51,7 +51,7 @@
 #define APP_RX_DATA_SIZE  1000
 #define APP_TX_DATA_SIZE  1000
 /* USER CODE BEGIN EXPORTED_DEFINES */
-#define RX_BUFFER_MAX_WRITE_INDEX (APP_RX_DATA_SIZE - CDC_DATA_FS_MAX_PACKET_SIZE)
+
 /* USER CODE END EXPORTED_DEFINES */
 
 /**
@@ -64,13 +64,7 @@
   */
 
 /* USER CODE BEGIN EXPORTED_TYPES */
- typedef struct VCP_FIFO_TYPE
- {
-   uint8_t* data;  // Will point to the Cube-generated Tx or Rx buffer
-   int  wr;    // Write index
-   int  rd;    // Read index
-   int  lb;    // Additional index
- } VCP_FIFO;
+
 /* USER CODE END EXPORTED_TYPES */
 
 /**
@@ -114,9 +108,7 @@ extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
 
 /* USER CODE BEGIN EXPORTED_FUNCTIONS */
-int vcp_send(uint8_t* buf, uint16_t len);
-int vcp_recv(uint8_t* buf, uint16_t len);
-void vcp_service();
+
 /* USER CODE END EXPORTED_FUNCTIONS */
 
 /**
