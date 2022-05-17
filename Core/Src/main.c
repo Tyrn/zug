@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "usbd_cdc_if.h"
+#include "circus.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,9 +100,9 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     // VCP demonstration - Echo all data received over VCP back to the host
-    int len = vcp_recv (buf, 1000);  // Read up to 1000 bytes
+    int len = l_circus_vcp_recv(buf, 1000);  // Read up to 1000 bytes
     if (len > 0)    // If some data was read, send it back :
-      len = vcp_send (buf, len);
+      len = l_circus_vcp_send(buf, len);
   }
   /* USER CODE END 3 */
 }
