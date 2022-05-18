@@ -74,11 +74,7 @@ void MX_USB_DEVICE_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
 
-<<<<<<< HEAD
   /*Configure GPIO pin : PA12, a.k.a. USB_DP */
-=======
-  /*Configure GPIO pin : PA2 */
->>>>>>> 2100ca9fad83b48a944ef3e4846b38bde8fc2ef7
   GPIO_InitStruct.Pin = GPIO_PIN_12;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
