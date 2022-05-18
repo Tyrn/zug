@@ -78,6 +78,19 @@ int8_t c_circus_cdc_receive_fs(uint8_t *Buf, uint32_t *Len)
 }
 
 /*
+ * @brief  Calculate the available space in the Tx FIFO
+ * @retval Available space in bytes
+ */
+int l_circus_vcp_send_available(void)
+{
+  int cap = vcp_tx_fifo.wr - vcp_tx_fifo.rd;   // occupied space in the Tx FIFO
+  if (cap < 0)    // FIFO contents wrap around
+    cap += APP_TX_DATA_SIZE;
+  cap = APP_TX_DATA_SIZE - cap;      // available capacity
+  return cap;
+}
+
+/*
  * @brief  Put array of bytes into the circular buffer
  * @param  buf: Data to be sent
  * @param  len: Bytes to be sent
@@ -85,11 +98,7 @@ int8_t c_circus_cdc_receive_fs(uint8_t *Buf, uint32_t *Len)
  */
 int l_circus_vcp_send(uint8_t *buf, uint16_t len)
 {
-  // Step 1 : calculate the occupied space in the Tx FIFO
-  int cap = vcp_tx_fifo.wr - vcp_tx_fifo.rd;   // occupied capacity
-  if (cap < 0)    // FIFO contents wrap around
-    cap += APP_TX_DATA_SIZE;
-  cap = APP_TX_DATA_SIZE - cap;      // available capacity
+  int cap = l_circus_vcp_send_available();  // available capacity
   // Step 2 : compare with argument
   if (cap < len)
     return -1;   // Not enough room to copy "buf" into the FIFO => error
