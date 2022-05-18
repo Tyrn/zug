@@ -22,6 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "min.h"
 #include "circus.h"
 /* USER CODE END Includes */
 
@@ -54,6 +55,28 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+/* MIN callbacks: */
+
+// Tell MIN how much space there is to write to the serial port. This is used
+// inside MIN to decide whether to bother sending a frame or not.
+uint16_t min_tx_space(uint8_t _port)
+{
+  uint16_t n = l_circus_vcp_send_available();
+  return n;
+}
+
+// Send a character on the designated port.
+void min_tx_byte(uint8_t _port, uint8_t byte)
+{
+  l_circus_vcp_send(&byte, 1U);
+}
+
+// Tell MIN the current time in milliseconds.
+uint32_t min_time_ms(void)
+{
+  return HAL_GetTick();
+}
 
 /* USER CODE END 0 */
 
