@@ -7,6 +7,10 @@
 #include "usbd_cdc_if.h"
 #include "circus.h"
 
+#ifndef NO_MIN
+  struct min_context min_ctx;
+#endif
+
 /* USB Device Core handle declaration.   (usb_device.c) */
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
@@ -124,6 +128,21 @@ int l_circus_vcp_send(uint8_t *buf, uint16_t len)
     vcp_tx_fifo.wr = len - tail;
   }
   return 0;  // successful completion
+}
+
+/*
+ * @brief  Calculate the available space in the Rx FIFO
+ * @retval Available space in bytes
+ */
+int l_circus_vcp_recv_available(void)
+{
+  // Compute how much data is in the FIFO
+  int cap = vcp_rx_fifo.wr - vcp_rx_fifo.rd;
+  if (cap == 0)
+    return 0;      // Empty FIFO, no data to read
+  if (cap < 0)  // FIFO contents wrap around
+    cap += vcp_rx_fifo.lb;  // Notice the use of lb
+  return cap;
 }
 
 /*

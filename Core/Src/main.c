@@ -56,6 +56,7 @@ void initialise_monitor_handles(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+#ifndef NO_MIN
 /* MIN callbacks: */
 
 // Tell MIN how much space there is to write to the serial port. This is used
@@ -77,6 +78,16 @@ uint32_t min_time_ms(void)
 {
   return HAL_GetTick();
 }
+
+void min_application_handler(uint8_t min_id, uint8_t const *min_payload, uint8_t len_payload, uint8_t port)
+{
+  // In this simple example application we just echo the frame back when we get one
+  bool result = min_queue_frame(&min_ctx, min_id, min_payload, len_payload);
+  if(!result) {
+    //printf("Queue failed\n");
+  }
+}
+#endif
 
 /* USER CODE END 0 */
 
@@ -127,10 +138,13 @@ int main(void)
       HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
       HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
     }
+#ifndef NO_MIN
+#else
     // VCP demonstration - Echo all data received over VCP back to the host
     int len = l_circus_vcp_recv(buf, 1000);  // Read up to 1000 bytes
     if (len > 0)    // If some data was read, send it back :
       len = l_circus_vcp_send(buf, len);
+#endif
 
     toggle_count++;
   }

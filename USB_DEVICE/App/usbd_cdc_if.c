@@ -150,7 +150,11 @@ USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
 static int8_t CDC_Init_FS(void)
 {
   /* USER CODE BEGIN 3 */
-  return c_circus_cdc_init_fs();
+  int8_t n = c_circus_cdc_init_fs();
+#ifndef NO_MIN
+  min_init_context(&min_ctx, 0);
+#endif
+  return n;
   /* USER CODE END 3 */
 }
 
