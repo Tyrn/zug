@@ -154,6 +154,7 @@ int main(void)
 #ifndef NO_MIN
     uint8_t small_buf[SMALL_BUF_SIZE];
     int buf_len = l_circus_vcp_recv(small_buf, SMALL_BUF_SIZE);
+    //printf("buf_len: %d\n", buf_len);
 
     min_poll(&min_ctx, (uint8_t *)buf, (uint8_t)buf_len);
 #else

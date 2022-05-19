@@ -18,7 +18,7 @@ int l_circus_vcp_recv(uint8_t *buf, uint16_t len);
 
 void v_circus_vcp_service();
 
-//#define NO_MIN
+#define NO_MIN
 #ifndef NO_MIN
   #include "min.h"
   extern struct min_context min_ctx;
