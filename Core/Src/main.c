@@ -33,6 +33,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define MAIN_BUF_SIZE 1000
+#define SMALL_BUF_SIZE 32
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -87,6 +89,17 @@ void min_application_handler(uint8_t min_id, uint8_t const *min_payload, uint8_t
     //printf("Queue failed\n");
   }
 }
+
+void min_tx_start(uint8_t _port)
+{
+
+}
+
+void min_tx_finished(uint8_t _port)
+{
+
+}
+
 #endif
 
 /* USER CODE END 0 */
@@ -126,7 +139,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint8_t buf[1000];
+  uint8_t buf[MAIN_BUF_SIZE];
   unsigned int toggle_count = 0;
   while (1)
   {
@@ -139,9 +152,13 @@ int main(void)
       HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
     }
 #ifndef NO_MIN
+    uint8_t small_buf[SMALL_BUF_SIZE];
+    int buf_len = l_circus_vcp_recv(small_buf, SMALL_BUF_SIZE);
+
+    min_poll(&min_ctx, (uint8_t *)buf, (uint8_t)buf_len);
 #else
     // VCP demonstration - Echo all data received over VCP back to the host
-    int len = l_circus_vcp_recv(buf, 1000);  // Read up to 1000 bytes
+    int len = l_circus_vcp_recv(buf, MAIN_BUF_SIZE);  // Read up to 1000 bytes
     if (len > 0)    // If some data was read, send it back :
       len = l_circus_vcp_send(buf, len);
 #endif

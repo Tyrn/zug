@@ -136,10 +136,9 @@ int l_circus_vcp_send(uint8_t *buf, uint16_t len)
  */
 int l_circus_vcp_recv_available(void)
 {
-  // Compute how much data is in the FIFO
   int cap = vcp_rx_fifo.wr - vcp_rx_fifo.rd;
   if (cap == 0)
-    return 0;      // Empty FIFO, no data to read
+    return 0;
   if (cap < 0)  // FIFO contents wrap around
     cap += vcp_rx_fifo.lb;  // Notice the use of lb
   return cap;
@@ -154,11 +153,9 @@ int l_circus_vcp_recv_available(void)
 int l_circus_vcp_recv(uint8_t *buf, uint16_t len)
 {
   // Compute how much data is in the FIFO
-  int cap = vcp_rx_fifo.wr - vcp_rx_fifo.rd;
+  int cap = l_circus_vcp_recv_available();
   if (cap == 0)
     return 0;      // Empty FIFO, no data to read
-  if (cap < 0)  // FIFO contents wrap around
-    cap += vcp_rx_fifo.lb;  // Notice the use of lb
   // Limit the FIFO read to the available data
   if (len > cap)
     len = cap;
